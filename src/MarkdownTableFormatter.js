@@ -100,6 +100,7 @@ MarkdownTableFormatter.prototype.import_table = function(table) {
     table_rows.shift();
   }
 
+  var crow_i = 0;
   for (var row_i = 0, row_l = table_rows.length; row_i < row_l; row_i = row_i + 1) {
 
     // TODO: Set up the indexes so that empty lines at either the top or bottom will
@@ -108,7 +109,7 @@ MarkdownTableFormatter.prototype.import_table = function(table) {
       continue;
     }
 
-    this.cells[row_i] = new Array();
+    this.cells[crow_i] = new Array();
 
 	if(row_i == 0) {
 		var row_columns = table_rows[row_i].split(SPLIT_HEADER_COL);
@@ -118,19 +119,19 @@ MarkdownTableFormatter.prototype.import_table = function(table) {
 	}
 
     for (var col_i = 0, col_l = row_columns.length; col_i < col_l; col_i = col_i + 1) {
-      this.cells[row_i][col_i] = row_columns[col_i]
-      this.cells[row_i][col_i] = this.cells[row_i][col_i].replace(/^\s+/g,"");
-      this.cells[row_i][col_i] = this.cells[row_i][col_i].replace(/\s+$/g,"");
+      this.cells[crow_i][col_i] = row_columns[col_i]
+      this.cells[crow_i][col_i] = this.cells[crow_i][col_i].replace(/^\s+/g,"");
+      this.cells[crow_i][col_i] = this.cells[crow_i][col_i].replace(/\s+$/g,"");
 
       // If it's the separator row, parse down the dashes
       // Only do this if it matches to avoid adding a
       // dash in an empty column and messing with the column widths.
       if (row_i == 1 && HEADER_SUB_LINE) {
-        this.cells[row_i][col_i] = this.cells[row_i][col_i].replace(/-+/g,"-");
+        this.cells[crow_i][col_i] = this.cells[crow_i][col_i].replace(/-+/g,"-");
       }
     }
+	crow_i += 1;
   }
-
 
   // Remove leading and trailing rows if they are empty.
   this.get_column_widths();
