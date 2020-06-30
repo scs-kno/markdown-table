@@ -1,3 +1,20 @@
+var HEADER_START = "| ";
+var HEADER_SEP = " | ";
+var HEADER_END = " |\n";
+
+var HEADER_SUB_LINE = true;
+var HEADER_SUB_START = "|-";
+var HEADER_SUB_SEP = "-|-";
+var HEADER_SUB_END = "-|\n";
+
+var LINE_START = "| ";
+var LINE_SEP = " | ";
+var LINE_END = " |\n";
+
+var SPLIT_HEADER_COL = "\|";
+var SPLIT_COL = "\|";
+
+
 function MarkdownTableFormatter() {
 
   // Setup instance variables.
@@ -32,20 +49,20 @@ MarkdownTableFormatter.prototype.format_table = function(table) {
   this.pad_cells_for_output();
 
   // Header
-  this.output_table = "| ";
-  this.output_table += this.cells[0].join(" | ");
-  this.output_table += " |\n";
+  this.output_table = HEADER_START;
+  this.output_table += this.cells[0].join(HEADER_SEP);
+  this.output_table += HEADER_END;
 
   // Separator 
-  this.output_table += "|-";
-  this.output_table += this.cells[1].join("-|-");
-  this.output_table += "-|\n";
+  this.output_table += HEADER_SUB_START;
+  this.output_table += this.cells[1].join(HEADER_SUB_SEP);
+  this.output_table += HEADER_SUB_END;
 
 
   for (var row_i = 2, row_l = this.cells.length; row_i < row_l; row_i = row_i + 1) {
-    this.output_table += "| ";
-    this.output_table += this.cells[row_i].join(" | ");
-    this.output_table += " |\n";
+    this.output_table += LINE_START;
+    this.output_table += this.cells[row_i].join(LINE_SEP);
+    this.output_table += LINE_END;
   }
 
 }
@@ -93,7 +110,12 @@ MarkdownTableFormatter.prototype.import_table = function(table) {
 
     this.cells[row_i] = new Array();
 
-    var row_columns = table_rows[row_i].split("\|");
+	if(row_i == 0) {
+		var row_columns = table_rows[row_i].split(SPLIT_HEADER_COL);
+	}
+	else {
+		var row_columns = table_rows[row_i].split(SPLIT_COL);
+	}
 
     for (var col_i = 0, col_l = row_columns.length; col_i < col_l; col_i = col_i + 1) {
       this.cells[row_i][col_i] = row_columns[col_i]
@@ -103,7 +125,7 @@ MarkdownTableFormatter.prototype.import_table = function(table) {
       // If it's the separator row, parse down the dashes
       // Only do this if it matches to avoid adding a
       // dash in an empty column and messing with the column widths.
-      if (row_i == 1) {
+      if (row_i == 1 && HEADER_SUB_LINE) {
         this.cells[row_i][col_i] = this.cells[row_i][col_i].replace(/-+/g,"-");
       }
     }
