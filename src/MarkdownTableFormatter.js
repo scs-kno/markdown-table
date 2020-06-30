@@ -1,17 +1,18 @@
-var HEADER_START = "| ";
-var HEADER_SEP = " | ";
-var HEADER_END = " |\n";
+// JSPWikiPlugin
+var HEADER_START = "|| ";
+var HEADER_SEP = " || ";
+var HEADER_END = " ||\n";
 
-var HEADER_SUB_LINE = true;
-var HEADER_SUB_START = "|-";
-var HEADER_SUB_SEP = "-|-";
-var HEADER_SUB_END = "-|\n";
+var HEADER_SUB_LINE = false;
+var HEADER_SUB_START = "";
+var HEADER_SUB_SEP = "";
+var HEADER_SUB_END = "\n";
 
 var LINE_START = "| ";
-var LINE_SEP = " | ";
-var LINE_END = " |\n";
+var LINE_SEP = "  | ";
+var LINE_END = "  |\n";
 
-var SPLIT_HEADER_COL = "\|";
+var SPLIT_HEADER_COL = "\|\|";
 var SPLIT_COL = "\|";
 
 
@@ -54,12 +55,15 @@ MarkdownTableFormatter.prototype.format_table = function(table) {
   this.output_table += HEADER_END;
 
   // Separator 
-  this.output_table += HEADER_SUB_START;
-  this.output_table += this.cells[1].join(HEADER_SUB_SEP);
+  var row_init = 1;
+  if (HEADER_SUB_LINE) {
+	row_init = 2;
+	this.output_table += HEADER_SUB_START;
+	this.output_table += this.cells[1].join(HEADER_SUB_SEP);
+  }
   this.output_table += HEADER_SUB_END;
 
-
-  for (var row_i = 2, row_l = this.cells.length; row_i < row_l; row_i = row_i + 1) {
+  for (var row_i = row_init, row_l = this.cells.length; row_i < row_l; row_i = row_i + 1) {
     this.output_table += LINE_START;
     this.output_table += this.cells[row_i].join(LINE_SEP);
     this.output_table += LINE_END;
@@ -165,8 +169,8 @@ MarkdownTableFormatter.prototype.pad_cells_for_output = function() {
   for (var row_i = 0, row_l = this.cells.length; row_i < row_l; row_i = row_i + 1) {
     for (var col_i = 0, col_l = this.cells[row_i].length; col_i < col_l; col_i = col_i + 1) {
 
-      // Handle anything that's not the separator row
-      if (row_i != 1) {
+      // Handle anything that's not the separator row, if any
+      if (row_i != 1 || (!HEADER_SUB_LINE)) {
         while(this.cells[row_i][col_i].length < this.column_widths[col_i]) {
           this.cells[row_i][col_i] += " ";
         }
