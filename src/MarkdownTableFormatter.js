@@ -33,7 +33,7 @@ MarkdownTableFormatter.prototype.add_missing_cell_columns = function() {
     for (var col_i = 0, col_l = this.column_widths.length; col_i < col_l; col_i = col_i + 1) {
       if (typeof this.cells[row_i][col_i] === 'undefined') {
         this.cells[row_i][col_i] = '';
-      }      
+      }
     }
   }
 }
@@ -54,7 +54,7 @@ MarkdownTableFormatter.prototype.format_table = function(table) {
   this.output_table += this.cells[0].join(HEADER_SEP);
   this.output_table += HEADER_END;
 
-  // Separator 
+  // Separator
   var row_init = 1;
   if (HEADER_SUB_LINE) {
 	row_init = 2;
@@ -112,7 +112,7 @@ MarkdownTableFormatter.prototype.get_column_widths = function() {
 ////////////////////////////////////////////////////////////////////////////////
 
 MarkdownTableFormatter.prototype.import_table = function(table) {
-  
+
   var table_rows = table.split("\n");
 
   // Remove leading empty lines
@@ -155,7 +155,7 @@ MarkdownTableFormatter.prototype.import_table = function(table) {
 
   // Remove leading and trailing rows if they are empty.
   this.get_column_widths();
-  
+
   if (this.column_widths[0] == 0) {
     for (var row_i = 0, row_l = this.cells.length; row_i < row_l; row_i = row_i + 1) {
       this.cells[row_i].shift();
@@ -171,7 +171,7 @@ MarkdownTableFormatter.prototype.import_table = function(table) {
       if (this.cells[row_i].length == this.column_widths.length) {
         this.cells[row_i].pop();
       }
-    }    
+    }
   }
 
   this.get_column_widths();
