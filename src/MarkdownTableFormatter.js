@@ -1,7 +1,7 @@
 // JSPWikiPlugin
 var HEADER_START = "|| ";
 var HEADER_SEP = " || ";
-var HEADER_END = " ||\n";
+var HEADER_END = " \n";
 
 var HEADER_SUB_LINE = false;
 var HEADER_SUB_START = "";
@@ -10,7 +10,7 @@ var HEADER_SUB_END = "\n";
 
 var LINE_START = "| ";
 var LINE_SEP = "  | ";
-var LINE_END = "  |\n";
+var LINE_END = "\n";
 
 var SPLIT_HEADER_COL = "\|\|";
 var SPLIT_COL = "\|";
